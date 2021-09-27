@@ -1,0 +1,23 @@
+{
+    "name": "ahmetbarut/view-render",
+    "description": "View Render",
+    "type": "package",
+    "require": {
+    },
+    "require-dev": {
+        "symfony/var-dumper": "6.0.x-dev"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ahmetbarut\\View\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ahmet Barut",
+            "email": "ahmetbarut588@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
