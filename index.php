@@ -1,11 +1,13 @@
 <?php
 require_once  "vendor/autoload.php";
 
-$view = new \ahmetbarut\View\Engine([
+$view = new \ahmetbarut\View\Render([
     "view" => __DIR__ . "/view",
     'cache' => __DIR__ . '/cache'
 ]);
-$view->load('home2', [
+
+
+$view->load('home', [
     "echo" => "burası echo",
     "lorem" => "asdsad",
     "todos" => [
@@ -15,5 +17,6 @@ $view->load('home2', [
         "Todo 4",
         "Todo 5",
     ]
-
 ]);
+?>
+
