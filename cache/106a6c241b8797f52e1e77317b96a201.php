@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $lorems }}</title>
+    <title><?=$lorems?></title>
 </head>
 <body>
     <div>
@@ -13,18 +13,18 @@
     </div>
 
     <div>
-        {{ $echo }}
-        {{ strtoupper($echo) }}
-        @foreach($todos as $key => $todo)
-        {{ $todo }} <br>
-            @if($key === 1)
-                <h1>{{ $key }} DDD</h1>
-            @else
+        <?=$echo?>
+        <?=strtoupper($echo)?>
+        <?php foreach($todos as $key => $todo): ?>
+        <?=$todo?> <br>
+            <?php if($key === 1): ?>
+                <h1><?=$key?> DDD</h1>
+            <?php else: ?>
                 <h4>Key 1'den büyük:d</h4>
-            @endif
-        @endforeach
+            <?php endif; ?>
+        <?php endforeach; ?>
 
-        @print_r(explode(",","loremipsum, uzunlar, yanıyor, bu"))
+        <?= print_r(explode(",","loremipsum, uzunlar, yanıyor, bu")); ?>
     </div>
     <footer> ss
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aliquam aperiam autem cum debitis error facilis nam quia vel, voluptas. Adipisci beatae error id itaque iusto nulla perferendis possimus voluptas.
