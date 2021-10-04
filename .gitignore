@@ -4,3 +4,5 @@ cache
 .vscode
 composer.lock
 view
+vendor
+view

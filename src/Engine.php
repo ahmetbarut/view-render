@@ -24,7 +24,7 @@ class Engine
      * Engine constructor.
      * @param $options
      */
-    public function __construct($options)
+    public function __construct($options, array $allowedFunction = [])
     {
         $this->options = $options;
 
@@ -77,6 +77,17 @@ class Engine
     public function config(string $key): mixed
     {
         return $this->options[$key];
+    }
+
+    /**
+     * added locale function in php library.
+     *
+     * @param array ...$function
+     * @return void
+     */
+    public function setAllowLocaleFunction(...$function)
+    {
+        array_push($this->allowFunctions, $function);
     }
 
 }

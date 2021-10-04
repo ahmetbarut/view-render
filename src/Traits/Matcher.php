@@ -13,6 +13,15 @@ trait Matcher
     ];
 
     /**
+     * Allowed other functions
+     *
+     * @var array
+     */
+    protected array $allowFunctions = [
+        'dd','print_r', 'var_dump' 
+    ];
+    
+    /**
      * While matching, it may be necessary to call some keywords,
      * namely our methods, from a class (Template engine).
      * The keywords here are specified to be called on the engine.
@@ -63,8 +72,10 @@ trait Matcher
                     return "<?php \$this->" . $match[1] . "; ?>";
                 }
 
-                if (function_exists($key[0])) {
-                    return "<?= " . $match[1] . "; ?>";
+                if (in_array($key[0], $this->allowFunctions)) {
+                    if (function_exists($key[0])) {
+                        return "<?= " . $match[1] . "; ?>";
+                    }
                 }
             }
             if (!in_array($match[1], $this->customKeywords)) {

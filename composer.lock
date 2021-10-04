@@ -4,8 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a05f535d870c3f6bb9700eb648f39e8c",
-    "packages": [
+    "content-hash": "08b845e09a667192c6f398fa9fce0a7a",
+    "packages": [],
+    "packages-dev": [
         {
             "name": "symfony/polyfill-mbstring",
             "version": "dev-main",
@@ -93,12 +94,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "b19869356c52cd62ef94fe915ef2c6e21840b71c"
+                "reference": "936e77368499a2b6acc89a6aa4db67f050ba19d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/b19869356c52cd62ef94fe915ef2c6e21840b71c",
-                "reference": "b19869356c52cd62ef94fe915ef2c6e21840b71c",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/936e77368499a2b6acc89a6aa4db67f050ba19d5",
+                "reference": "936e77368499a2b6acc89a6aa4db67f050ba19d5",
                 "shasum": ""
             },
             "require": {
@@ -173,10 +174,9 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-24T16:15:55+00:00"
+            "time": "2021-09-30T15:28:07+00:00"
         }
     ],
-    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
