@@ -1,8 +1,8 @@
-cache
-.gitignore
 .idea
+.history
+.gitignore
 .vscode
+cache
 composer.lock
-view
 vendor
 view

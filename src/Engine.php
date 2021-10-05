@@ -34,6 +34,8 @@ class Engine
             throw new \Error("Can't find view directory.");
         }
 
+        $this->allowFunctions = array_merge($this->allowFunctions, $allowedFunction);
+
     }
 
     /**
