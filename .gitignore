@@ -6,3 +6,5 @@ cache
 composer.lock
 vendor
 view
+index.php
+*.md

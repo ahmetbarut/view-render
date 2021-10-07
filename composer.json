@@ -1,9 +1,8 @@
 {
     "name": "ahmetbarut/view-render",
-    "description": "View Render",
+    "description": "A simple template engine that is lightweight and has no dependencies.",
     "type": "package",
-    "require": {
-    },
+    "require": {},
     "require-dev": {
         "symfony/var-dumper": "6.0.x-dev"
     },
@@ -13,11 +12,9 @@
             "ahmetbarut\\View\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "Ahmet Barut",
-            "email": "ahmetbarut588@gmail.com"
-        }
-    ],
+    "authors": [{
+        "name": "Ahmet Barut",
+        "email": "ahmetbarut588@gmail.com"
+    }],
     "minimum-stability": "dev"
 }

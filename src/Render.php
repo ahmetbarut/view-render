@@ -44,7 +44,7 @@ class Render extends Engine
      * Include a page.
      * @param $section
      */
-    public function extends($section): void
+    public function extendSection($section): void
     {
         $this->layouts = $section;
     }
@@ -54,7 +54,7 @@ class Render extends Engine
      *
      * @param  string $section
      */
-    public function yield(string $section)
+    public function yieldSection(string $section)
     {
         echo $this->sections[$section];
     }

@@ -50,7 +50,7 @@ class Engine
      */
     public function load(string $view, array $data = []){
 
-        extract($data, EXTR_IF_EXISTS);
+        extract($data, EXTR_OVERWRITE);
 
         $viewPath = $this->config('view') . "/{$view}.php";
         ob_start();
