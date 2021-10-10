@@ -20,6 +20,8 @@ class Engine
      */
     protected \ahmetbarut\View\ViewCache $cache;
 
+    protected static array $share = [];
+
     /**
      * Engine constructor.
      * @param $options
@@ -35,7 +37,6 @@ class Engine
         }
 
         $this->allowFunctions = array_merge($this->allowFunctions, $allowedFunction);
-
     }
 
     /**
@@ -48,25 +49,39 @@ class Engine
      * @param string $view
      * @param  array  $data
      */
-    public function load(string $view, array $data = []){
+    public function load(string $view, array $data = [])
+    {
+        $data = array_merge(static::$share, $data);
 
         extract($data, EXTR_OVERWRITE);
 
         $viewPath = $this->config('view') . "/{$view}.php";
         ob_start();
-        require ($viewPath);
+        require($viewPath);
         $content = ob_get_clean();
 
         $content = $this->matchAllTags($content);
 
         $this->cache->createViewCache($view, $this->config('view'), $content);
 
-        require ($this->cache->getCacheView($view));
+        require($this->cache->getCacheView($view));
 
         if (null !== error_get_last()) {
             new ViewError($view);
         }
+    }
 
+    public function share($key, $value = null): void
+    {
+        $share = [];
+
+        if (!is_array($key)) {
+            $share[$key] = $value;
+        } else {
+            $share = $key;
+        }
+
+        static::$share = $share;
     }
 
     /**
@@ -87,9 +102,10 @@ class Engine
      * @param array ...$function
      * @return void
      */
-    public function setAllowLocaleFunction(...$function)
+    public function setAllowLocaleFunction(...$functions)
     {
-        array_push($this->allowFunctions, $function);
+        foreach ($functions as $function) {
+            array_push($this->allowFunctions, $function);
+        }
     }
-
 }

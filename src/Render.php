@@ -15,14 +15,14 @@ class Render extends Engine
      * Page included with "extends"
      * @var string $layouts
      */
-    public string $layouts;
+    public string $layouts = '';
 
     /**
      * Keeps the currently running partition.
      * @var string $activeSectionName
      */
     public string $activeSectionName;
-
+    
     /**
      * Render Constructor
      * @param $options
@@ -81,6 +81,6 @@ class Render extends Engine
 
     public function __destruct()
     {
-        $this->load($this->layouts);
+        $this->layouts !== '' ? $this->load($this->layouts): '';
     }
 }

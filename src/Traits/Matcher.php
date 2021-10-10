@@ -2,16 +2,10 @@
 
 namespace ahmetbarut\View\Traits;
 
+use ReflectionFunction;
+
 trait Matcher
 {
-    /**
-     * Some keywords must end with a colon (:). We need to specify here.
-     * @var array|string[] $escapeSemicolon
-     */
-    private array $escapeSemicolon = [
-        'else',
-    ];
-
     /**
      * Allowed other functions
      *
@@ -40,19 +34,6 @@ trait Matcher
     private $content;
 
     /**
-     * Retrieves the codes between the curly brackets.
-     * @param $content
-     *
-     * @return array|string|null
-     */
-    public function brackets(): array|string|null
-    {
-        return $this->content = preg_replace_callback("/{{(.*)}}/isU", function ($match) {
-            return "<?=" . htmlspecialchars(trim($match[1])) . "?>";
-        }, $this->content);
-    }
-
-    /**
      * Runs all mappings.
      *
      * @param $content
@@ -62,52 +43,68 @@ trait Matcher
     public function matchAllTags($content): array|string|null
     {
         $this->content = $content;
-        $this->startTemplateTagsMatch();
+        $this->extendMatch();
+        $this->sectionMatch();
+        $this->yieldMatch();
+        $this->conditionIfMatch();
+        $this->conditionElseIfMatch();
+        $this->conditionElseMatch();
+        $this->conditionEndIfMatch();
+        $this->phpMatch();
         $this->brackets();
-        $this->startTagMatch();
         $this->endMatch();
+        $this->allowFunctionMatch();
         return $this->content;
     }
 
-    public function startTemplateTagsMatch()
-    {
-        $this->content = preg_replace_callback("/@([a-zA-Z_]+)\((.*?)\)/", function ($match) {
-
-            if (in_array($match[1], $this->templateTags)) {
-                return "<?php \$this->" . $this->aliasMethod[$match[1]] . "({$match[2]}); ?>";
-            }
-
-
-            return false;
-        }, $this->content);
-    }
-
     /**
-     * Matches and replaces start tags. Ex: if, foreach, for etc.
-     *
+     * Retrieves the codes between the curly brackets.
      * @param $content
      *
      * @return array|string|null
      */
-    public function startTagMatch(): array|string|null
+    public function brackets(): array|string|null
     {
-        return $this->content = preg_replace_callback("/@([a-zA-Z_]+[(].*[)])/", function ($match) {
+        return $this->content = preg_replace_callback("/{{(.*)}}/isU", function ($match) {
+            return "<?=htmlspecialchars(trim(" . $match[1] . "))?>";
+        }, $this->content);
+    }
 
-            /*   if (preg_match("/([a-zA-Z_]+)/", $match[1], $key)) {
-                if (in_array($key[0],$this->templateTags)) {
-                    return "<?php \$this->" . $match[1] . "; ?>";
-                }
+    /**
+     * The partition matches the description.
+     *
+     * @return void
+     */
+    public function sectionMatch()
+    {
+        $this->content = preg_replace_callback("/@(section)\((.*?)\)/", function ($match) {
+            return "<?php \$this->" . $this->aliasMethod[$match[1]] . "({$match[2]}); ?>";
+        }, $this->content);
+    }
 
-                if (in_array($key[0], $this->allowFunctions)) {
-                    if (function_exists($key[0])) {
-                        return "<?= " . $match[1] . "; ?>";
-                    }
-                }
-            }
-            if (!in_array($match[1], $this->templateTags) && !in_array($match[1], $this->allowFunctions)) {
-                return "<?php " . $match[1] . ": ?>";
-            } */
-            return false;
+    /**
+     * Extend a layout
+     *
+     * @return void
+     */
+    public function extendMatch()
+    {
+        $this->content = preg_replace_callback("/@(extends)\((.*?)\)/", function ($match) {
+
+            return "<?php \$this->" . $this->aliasMethod[$match[1]] . "({$match[2]}); ?>";
+        }, $this->content);
+    }
+
+    /**
+     * Prints the defined section.
+     *
+     * @return void
+     */
+    public function yieldMatch()
+    {
+        $this->content = preg_replace_callback("/@(yield)\((.*?)\)/", function ($match) {
+
+            return "<?php \$this->" . $this->aliasMethod[$match[1]] . "({$match[2]}); ?>";
         }, $this->content);
     }
 
@@ -123,7 +120,81 @@ trait Matcher
             if (in_array($match[1], $this->templateTags)) {
                 return "<?php \$this->" . $this->aliasMethod[$match[1]] . "() ?>";
             }
-            
+        }, $this->content);
+    }
+
+    /**
+     * Matches PHP tags.
+     *
+     * @return void
+     */
+    public function phpMatch(): void
+    {
+        $this->content = preg_replace_callback("/@php(.*?)@endphp/s", function ($match) {
+            return "<?php " . $match[1] . "; ?>";
+        }, $this->content);
+    }
+
+
+    /**
+     * Matches the if condition.
+     *
+     * @return void
+     */
+    public function conditionIfMatch()
+    {
+        $this->content = preg_replace_callback("/@if\((.*)\)/", function ($match) {
+            return "<?php if({$match[1]}) {?>";
+        }, $this->content);
+    }
+
+    /**
+     * Matches the Elseif condition.
+     *
+     * @return void
+     */
+    public function conditionElseIfMatch()
+    {
+        $this->content = preg_replace_callback("/@elseif\((.*)\)/", function ($match) {
+            return "<?php } elseif({$match[1]}) {?>";
+        }, $this->content);
+    }
+
+    /**
+     * Matches the else condition.
+     *
+     * @return void
+     */
+    public function conditionElseMatch()
+    {
+        $this->content = preg_replace_callback("/@else/is", function ($match) {
+            return "<?php } else {?>";
+        }, $this->content);
+    }
+
+    /**
+     * Matches the endif condition.
+     *
+     * @return void
+     */
+    public function conditionEndIfMatch()
+    {
+        $this->content = preg_replace_callback("/@endif/is", function ($match) {
+            return "<?php }?>";
+        }, $this->content);
+    }
+
+    /**
+     * Matches the functions desired to be used on the template side.
+     *
+     * @return void
+     */
+    public function allowFunctionMatch()
+    {
+       $this->content = preg_replace_callback('/@(.*)\((.*)\)/', function($match){
+            if (in_array($match[1], $this->allowFunctions)) {
+                return "<?php " . $match[1] . "(" . $match[2] . "); ?>";
+            }
         }, $this->content);
     }
 }
