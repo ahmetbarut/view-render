@@ -4,6 +4,7 @@
 - [Directives](#directives)
     - [extends and yield](#extends-and-yield)
   - [section and endSection](#section-and-endsection)
+  - [](#)
 # PHP Simple View Engine
 A simple template engine that is lightweight and has no dependencies.
 
@@ -48,11 +49,11 @@ Create a file in the created `template` directory.
 The `load` method loads the corresponding template.
 
 # Directives
-Direktifler, bu template için kullanımlardır. 
+Directives are uses for this template.
 
 ### extends and yield
-`extends` direktifi, düzen eklemek için kullanılabilir. Bir sayfanızın olduğunu düşünün ve bu sayfanın bütün yapısını sürekli kopyalamak çok uğraştırıcı gereksiz bir şekilde kod yazmamıza sebep olur. Bu durumda `extends` direktifi işimizi basitleştiriyor.
-`yield` direktifi'de her sayfada değişecek bölümleri getirmeyi sağlar. 
+The `extends` directive can be used to add layouts. Imagine you have a page and constantly copying the entire structure of this page causes us to write code in a very tedious and unnecessary way. In this case, the `extends` directive simplifies our work.
+The `yield` directive allows to fetch the sections that will change on each page.
 
 Örnek Kullanım:
 ```php
@@ -71,8 +72,7 @@ Direktifler, bu template için kullanımlardır.
 </html>  
 
 ```
-Ve biz `home.php` sayfamızı dahil ederek ilgili düzeni dahil edip sayfamızı düzene ittik.
-
+And we included our `home.php` page and included the relevant layout and pushed our page into layout.
 ```php
 // home.php
 @extends('layouts')
@@ -87,5 +87,6 @@ hello there, this is content
 ```
 
 ## section and endSection
-`section` direktifi, bölümü başlatır ve `endSection` direktifi de bölümü bitirir ve düzene iter.
+The `section` directive starts the section and the `endSection` directive ends the section and pushes it into order.
 
+## 
